@@ -6,6 +6,7 @@ import setupAutomaticImports, { VuetifyLoaderOptions } from './automaticImports'
 import setupFont from './font'
 import setupIcons from './icons'
 import setupPlugin from './plugin'
+import setupProgressiveImages from './progressiveImages'
 import setupSass from './sass'
 
 declare module '@nuxt/types' {
@@ -30,6 +31,7 @@ const vuetifyModule: Module<Options> = function (moduleOptions) {
     }
 
     options.automaticImports && setupAutomaticImports.call(this, options.automaticImports)
+    options.progressiveImages && setupProgressiveImages.call(this)
 
     setupPlugin.call(this, options)
   })

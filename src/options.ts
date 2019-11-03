@@ -22,6 +22,7 @@ export interface Options {
   } | false
   frameworkOptions?: string | Partial<VuetifyPreset>
   globalImports?: GlobalImports
+  progressiveImages?: boolean
 }
 
 export const defaults = {

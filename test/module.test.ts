@@ -5,6 +5,7 @@ import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 import _vuetifyModule from '../src'
 import _initOptions, { defaults as defaultOptions, Options } from '../src/options'
 import _setupAutomaticImports, { VuetifyLoaderOptions } from '../src/automaticImports'
+import _setupProgressiveImages from '../src/progressiveImages'
 import _setupFont, { FontOptions } from '../src/font'
 import _setupIcons, { IconPreset } from '../src/icons'
 import _setupPlugin from '../src/plugin'
@@ -26,6 +27,10 @@ const setupAutomaticImports = (options?: Options['automaticImports']) => {
 const setupFont = (options?: FontOptions) => _setupFont.call(nuxt.moduleContainer, options)
 const setupIcons = (preset?: IconPreset) => _setupIcons.call(nuxt.moduleContainer, preset)
 const setupPlugin = (options?: Options) => _setupPlugin.call(nuxt.moduleContainer, options)
+const setupProgressiveImages = () => {
+  _setupProgressiveImages.call(nuxt.moduleContainer)
+  nuxt.options.build.extend && nuxt.options.build.extend({ plugins: [] })
+}
 const setupSass = (customVariables?: Options['customVariables']) => _setupSass.call(nuxt.moduleContainer, customVariables)
 
 beforeEach(async () => {
@@ -133,6 +138,26 @@ describe('setupAutomaticImports', () => {
   })
 })
 
+describe('setupProgressiveImages', () => {
+  test('default', () => {
+    setupProgressiveImages()
+
+    expect(true).toBe(true)
+  })
+
+  test('with options', () => {
+    const options: VuetifyLoaderOptions = {
+      match () {
+        return []
+      }
+    }
+
+    setupAutomaticImports(options)
+
+    expect(VuetifyLoaderPlugin).toHaveBeenCalledWith(options)
+  })
+})
+
 describe('setupPlugin', () => {
   test('default', () => {
     nuxt.options.dir.app = ''
@@ -162,7 +187,8 @@ describe('module', () => {
   test('without defaultAssets', async () => {
     await vuetifyModule({
       ...defaultOptions,
-      defaultAssets: false
+      defaultAssets: false,
+      progressiveImages: true
     })
   })
 })
